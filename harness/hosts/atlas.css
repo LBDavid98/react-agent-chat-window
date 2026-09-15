@@ -1,0 +1,34 @@
+/* Atlas. Source: frontend/src/styles/design-tokens.css. */
+:root {
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #e9edf4;
+  --color-text: #0d1117;
+  --color-text-mut: #6b7686;
+  --color-divider: rgba(13, 17, 23, 0.12);
+  --color-accent: #2a78d6;
+  --color-on-accent: #ffffff;
+  --color-good: #0ca30c;
+  --color-warning: #d18700;
+  --color-critical: #d03b3b;
+  --radius-sm: 6px;
+  --space-3: 12px;
+  --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --shadow-lg: 0 16px 44px rgba(13, 17, 23, 0.2);
+  --page-bg: #f2f4f8;
+}
+:root[data-scheme='dark'] {
+  --color-surface: #121722;
+  --color-surface-raised: #182030;
+  --color-surface-sunken: #0e131c;
+  --color-text: #eef2f8;
+  --color-text-mut: #7c879a;
+  --color-divider: rgba(174, 195, 227, 0.14);
+  --color-accent: #4d94ec;
+  --color-good: #2fbf3f;
+  --color-warning: #fbbf3f;
+  --color-critical: #e35d5d;
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --page-bg: #0b0e14;
+}

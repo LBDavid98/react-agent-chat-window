@@ -1,0 +1,33 @@
+/* The vendored Modernist core, plus a cobalt palette over it.
+ *
+ * Note what is NOT here, because it is the point: no raised or sunken surface,
+ * no muted ink, no --color-good/-warning/-critical, no --font-mono, no
+ * --color-on-accent. adapters/modernist.css derives all of those. Before that
+ * adapter existed, this is the configuration in which every agent reply
+ * rendered #e8edf3 ink on an #f3f2f2 ground. */
+:root {
+  --color-bg: #f4f5f6;
+  --color-surface: #e1e4e7;
+  --color-text: #161a1e;
+  --color-divider: color-mix(in srgb, #161a1e 40%, transparent);
+  --color-accent: #2681ef;
+  --color-ok: #006d42;
+  --color-warn: #aa7900;
+  --color-block: #b82800;
+  --space-3: 12.0px;
+  --radius-sm: 0px;
+  --font-body: 'Archivo', system-ui, sans-serif;
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+  --page-bg: #f4f5f6;
+}
+:root[data-scheme='dark'] {
+  --color-bg: #161719;
+  --color-surface: #202224;
+  --color-text: #e8edf3;
+  --color-divider: color-mix(in srgb, #e8edf3 46%, transparent);
+  --color-accent: #3991ff;
+  --color-ok: #3baa73;
+  --color-warn: #c68100;
+  --color-block: #ca3735;
+  --page-bg: #161719;
+}

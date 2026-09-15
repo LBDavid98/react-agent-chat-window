@@ -1,0 +1,294 @@
+{
+  "_": "GENERATED from the server SDK. Do not hand-edit \u2014 see wire.test.ts.",
+  "TurnEventKind": [
+    "turn_started",
+    "partial",
+    "tool_running",
+    "tool_result",
+    "awaiting_input",
+    "awaiting_confirmation",
+    "tool_request",
+    "final",
+    "interrupted",
+    "error"
+  ],
+  "TERMINAL_KINDS": [
+    "error",
+    "final",
+    "interrupted",
+    "tool_request"
+  ],
+  "Modality": [
+    "text",
+    "voice",
+    "video"
+  ],
+  "UX_VERBS": {
+    "ux.navigate": {
+      "name": "ux.navigate",
+      "description": "Go to a surface of the app, by surface ID.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "surface": {
+            "type": "string",
+            "description": "A contract surface ID, e.g. IF-03."
+          }
+        },
+        "required": [
+          "surface"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ux.open": {
+      "name": "ux.open",
+      "description": "Open what a control reveals \u2014 a dialog, panel, or row \u2014 by control ID.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "control": {
+            "type": "string",
+            "description": "A contract control ID, e.g. CTRL-03-001."
+          }
+        },
+        "required": [
+          "control"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ux.focus": {
+      "name": "ux.focus",
+      "description": "Move keyboard focus to a control, by control ID.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "control": {
+            "type": "string",
+            "description": "A contract control ID, e.g. CTRL-03-001."
+          }
+        },
+        "required": [
+          "control"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ux.highlight": {
+      "name": "ux.highlight",
+      "description": "Draw the user's attention to a control without touching it \u2014 no state change, no focus change, no navigation.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "control": {
+            "type": "string",
+            "description": "A contract control ID, e.g. CTRL-03-001."
+          },
+          "note": {
+            "type": "string",
+            "description": "Optional short caption shown beside the highlight."
+          }
+        },
+        "required": [
+          "control"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ux.fill": {
+      "name": "ux.fill",
+      "description": "Put a value into an input control, by control ID.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "control": {
+            "type": "string",
+            "description": "A contract control ID, e.g. CTRL-03-001."
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "control",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ux.read_selection": {
+      "name": "ux.read_selection",
+      "description": "Report where the user is: the active surface, focused control, and what is selected \u2014 identity, not content.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  "WidgetKind": [
+    "choice",
+    "multi_choice",
+    "form",
+    "confirm",
+    "scale",
+    "propose_alternative",
+    "table",
+    "metrics",
+    "bars",
+    "timeline",
+    "code",
+    "diff",
+    "markdown"
+  ],
+  "FieldType": [
+    "text",
+    "textarea",
+    "number",
+    "select",
+    "checkbox"
+  ],
+  "shapes": {
+    "Persona": [
+      "core_directive",
+      "greeting",
+      "identity",
+      "operating_rules"
+    ],
+    "AgentCard": [
+      "agent_id",
+      "credentialed",
+      "description",
+      "ir_sha256",
+      "modalities",
+      "name",
+      "persona",
+      "tools",
+      "unavailable"
+    ],
+    "SessionRef": [
+      "agent_id",
+      "expires_at",
+      "modality",
+      "session_id",
+      "stream_url",
+      "streaming"
+    ],
+    "TurnEvent": [
+      "args",
+      "at",
+      "call_id",
+      "degraded_from",
+      "detail",
+      "effect",
+      "kind",
+      "model_served",
+      "proposal_id",
+      "result",
+      "run_id",
+      "seq",
+      "session_id",
+      "summary",
+      "text",
+      "tool",
+      "turn_id",
+      "widget"
+    ],
+    "TranscriptEntry": [
+      "ended_at",
+      "modality",
+      "role",
+      "run_id",
+      "seq",
+      "started_at",
+      "text"
+    ],
+    "ClientTool": [
+      "description",
+      "input_schema",
+      "name"
+    ],
+    "ToolResult": [
+      "call_id",
+      "error",
+      "result",
+      "tool"
+    ],
+    "WidgetOption": [
+      "hint",
+      "label",
+      "value"
+    ],
+    "WidgetField": [
+      "default",
+      "help",
+      "label",
+      "max",
+      "min",
+      "name",
+      "options",
+      "placeholder",
+      "required",
+      "type"
+    ],
+    "WidgetColumn": [
+      "align",
+      "key",
+      "label"
+    ],
+    "WidgetMetric": [
+      "hint",
+      "label",
+      "tone",
+      "value"
+    ],
+    "WidgetBar": [
+      "hint",
+      "label",
+      "value"
+    ],
+    "WidgetStep": [
+      "at",
+      "label",
+      "state"
+    ],
+    "WidgetBody": [
+      "after",
+      "asked",
+      "bars",
+      "because",
+      "before",
+      "columns",
+      "instead",
+      "language",
+      "max",
+      "metrics",
+      "rows",
+      "steps",
+      "text"
+    ],
+    "WidgetSpec": [
+      "allow_free_text",
+      "body",
+      "fields",
+      "id",
+      "kind",
+      "sub",
+      "submit_label",
+      "title"
+    ],
+    "WidgetReply": [
+      "values",
+      "widget_id"
+    ],
+    "Action": [
+      "control",
+      "description",
+      "input_schema",
+      "name",
+      "surface"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+/* Aurora. Source: the host repo, src/design/themes.ts — four themes
+ * (plain, sakura, nebula, neo).
+ *
+ * THE ONE THING TO KNOW HERE, and the reason every adapter in this directory
+ * maps INTO --cai-* rather than redefining a host name: Aurora applies its
+ * theme as INLINE STYLE on document.documentElement —
+ *
+ *     for (const [k, v] of Object.entries(tokens)) root.style.setProperty(k, v)
+ *
+ * — and an inline style beats an author stylesheet. A file that tried to say
+ * `--card: …` here would be silently ignored. Defining --cai-bg-raised in terms
+ * of --card works, because Aurora never sets --cai-*. Mapping into our own
+ * vocabulary is the only direction that holds in every host.
+ *
+ * It also means this adapter follows a live theme switch for free: applyTheme()
+ * rewrites the inline properties, and every value below is substituted at use.
+ *
+ * Aurora has three surface levels of its own (--bg under --panel under
+ * --card), which is a better fit for this window than most hosts manage.
+ *
+ * Custom properties only. No rule in this file paints anything. */
+:root {
+  --cai-bg: var(--panel);
+  --cai-bg-sunken: var(--bg-2, var(--bg));
+  --cai-bg-raised: var(--card);
+  --cai-text: var(--text);
+  --cai-text-muted: var(--text-muted);
+  --cai-line: var(--border);
+
+  --cai-accent: var(--accent);
+  --cai-on-accent: var(--accent-ink);
+
+  /* Aurora names danger and warn but has no "good" — its positive signals
+     are semantic (--linked, --present, --canon), not a status green. Left to
+     the default rather than borrowed from one of those, which would mean
+     something specific to that app in a widget that is not about it. */
+  --cai-warn: var(--warn);
+  --cai-danger: var(--danger);
+
+  --cai-radius: var(--radius);
+  --cai-font: var(--font-ui);
+  --cai-mono: var(--font-mono);
+  --cai-shadow: var(--shadow-lg);
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>react-agent-chat-window — theme harness</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0;
+    font: 13px/1.5 system-ui, sans-serif;
+    background: #16161a;
+    color: #e6e6ea;
+  }
+  header { padding: 14px 18px; border-bottom: 1px solid #2c2c33; }
+  header h1 { font-size: 14px; margin: 0 0 4px; }
+  header p { margin: 0; color: #9a9aa4; max-width: 62ch; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1px;
+    background: #2c2c33;
+  }
+  .cell { background: #16161a; display: flex; flex-direction: column; min-width: 0; }
+  .cell > figcaption {
+    padding: 7px 12px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9a9aa4;
+  }
+  iframe { border: 0; width: 100%; height: 78vh; display: block; background: transparent; }
+</style>
+<header>
+  <h1>Theme harness</h1>
+  <p>
+    Every cell is an iframe loading the real <code>chat.css</code> and the real
+    <code>src/adapters/&lt;host&gt;.css</code>, unmodified, over a stand-in for that host's own
+    tokens. What you are looking for is a panel that reads as part of the app rather
+    than a card dropped on it — and specifically a light slab inside a dark window,
+    which is what the adapters exist to prevent.
+  </p>
+</header>
+<div class="grid" id="grid"></div>
+<script type="module">
+  const HOSTS = ['atlas', 'modernist', 'almanac', 'aurora']
+  const SCHEMES = ['light', 'dark']
+  const grid = document.getElementById('grid')
+  for (const host of HOSTS) {
+    for (const scheme of SCHEMES) {
+      const cell = document.createElement('figure')
+      cell.className = 'cell'
+      cell.style.margin = '0'
+      const cap = document.createElement('figcaption')
+      cap.textContent = `${host} · ${scheme}`
+      const frame = document.createElement('iframe')
+      frame.src = `frame.html?host=${host}&scheme=${scheme}`
+      frame.title = `${host} ${scheme}`
+      cell.append(cap, frame)
+      grid.append(cell)
+    }
+  }
+</script>

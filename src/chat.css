@@ -1,0 +1,347 @@
+/* ============================================================================
+ * chat.css — the window, and the eighteen roles it paints with.
+ *
+ * TWO LAYERS, AND THE REASON THERE ARE TWO.
+ *
+ *   --cai-*   the public hook. Set by an adapter (or by a host that wants to
+ *             restyle only this window). NEVER declared in this file — a
+ *             declaration here would beat the host's, because a rule on the
+ *             element beats an inherited value from :root no matter how
+ *             specific the host was.
+ *   --_x      the resolved value: `var(--cai-x, <literal>)`, declared once.
+ *             Every painting rule below reads one of these and nothing else.
+ *
+ * WHY NOT `var(--cai-x, var(--host-token, <literal>))`, WHICH IS WHAT THIS
+ * FILE USED TO DO. Because there is no such thing as "the" host token name.
+ * Atlas says --color-surface-raised, Aurora says --card, Almanac says
+ * --surface, a host app says none of the three. A chain naming one of them
+ * resolves in one app and silently falls through to a literal in the others —
+ * and a literal light grey painted inside a dark host is not a small problem,
+ * it is invisible text. Naming all of them is worse: the chain grows a term
+ * per app, and it resolves on whichever name the host happens to define
+ * rather than on which one means the right thing.
+ *
+ * So the mapping moves OUT, into `adapters/<host>.css` — one file per app,
+ * custom properties only, no rule that paints. See adapters/README.md.
+ *
+ * An app that imports no adapter gets the literals below, which are a plain
+ * legible window rather than a broken one.
+ *
+ * THIS FILE DECLARES NO POSITION, NO Z-INDEX AND NO VIEWPORT UNIT, so the
+ * window renders into whatever box the host gives it. `contract.test.ts`
+ * enforces that. Placement lives in `dock.css`, which is optional.
+ * ========================================================================== */
+
+:where(.cai-chat, .cai-dock, .cai-launcher) {
+  /* — surfaces & ink — */
+  --_bg: var(--cai-bg, #fff);
+  --_sunken: var(--cai-bg-sunken, #f3f2f2);
+  --_raised: var(--cai-bg-raised, #fafafa);
+  --_text: var(--cai-text, #16161a);
+  --_muted: var(--cai-text-muted, #6b6b73);
+  --_line: var(--cai-line, #e2e1e1);
+
+  /* — accent, and the ink that sits ON it — */
+  --_accent: var(--cai-accent, #ec3013);
+  --_on-accent: var(--cai-on-accent, #fff);
+
+  /* — status — */
+  --_good: var(--cai-good, #2f7d4f);
+  --_warn: var(--cai-warn, #b7791f);
+  --_danger: var(--cai-danger, #c0392b);
+
+  /* — shape, space, type — */
+  --_radius: var(--cai-radius, 0px);
+  --_gap: var(--cai-gap, 10px);
+  --_font: var(--cai-font, system-ui, sans-serif);
+  --_mono: var(--cai-mono, ui-monospace, monospace);
+  --_size: var(--cai-text-size, 13.5px);
+  --_shadow: var(--cai-shadow, 0 8px 32px rgb(0 0 0 / 18%));
+  --_z: var(--cai-z, 40);
+}
+
+.cai-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  /* Fills the box it is given, in a flex parent as well as a block one. Without
+     the grow it is a flex ITEM sizing to its content, so a host that drops it
+     straight into a `display: flex` row gets a window as narrow as its longest
+     line with the app's background beside it. Both are overridable; neither is
+     a guess about the host's layout. */
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--_bg);
+  color: var(--_text);
+  font-family: var(--_font);
+  font-size: var(--_size);
+  line-height: 1.45;
+}
+
+/* ---- chrome ------------------------------------------------------------- */
+.cai-head {
+  display: flex;
+  align-items: center;
+  gap: var(--_gap);
+  padding: var(--_gap);
+  border-bottom: 1px solid var(--_line);
+  flex: 0 0 auto;
+}
+.cai-headtext { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.cai-headtext span { color: var(--_muted); font-size: 0.85em; }
+.cai-status { color: var(--_muted); font-size: 0.8em; text-transform: lowercase; }
+
+.cai-fault {
+  display: flex;
+  align-items: center;
+  gap: var(--_gap);
+  padding: var(--_gap);
+  background: color-mix(in srgb, var(--_danger) 10%, transparent);
+  color: var(--_danger);
+  border-bottom: 1px solid var(--_line);
+}
+.cai-fault p { margin: 0; flex: 1; min-width: 0; }
+
+/* ---- the stream --------------------------------------------------------- */
+.cai-stream {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--_gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+}
+.cai-empty { justify-content: center; color: var(--_muted); text-align: center; }
+
+.cai-row { display: flex; }
+.cai-row.cai-operator { justify-content: flex-end; }
+.cai-row.cai-agent { justify-content: flex-start; }
+.cai-row.cai-center { justify-content: center; }
+
+.cai-said { display: flex; flex-direction: column; gap: 3px; max-width: 85%; min-width: 0; }
+.cai-row.cai-operator .cai-said { align-items: flex-end; }
+.cai-served { color: var(--_muted); font-size: 0.75em; }
+
+.cai-bubble {
+  max-width: 100%;
+  padding: calc(var(--_gap) * 0.7) var(--_gap);
+  border-radius: var(--_radius);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* Both bubbles state their own ink. A background without a colour beside it
+   inherits whatever the host's ink is, which is how an agent reply ends up as
+   near-white text on a near-white ground in a dark theme. */
+.cai-bubble.cai-operator { background: var(--_accent); color: var(--_on-accent); }
+.cai-bubble.cai-agent { background: var(--_sunken); color: var(--_text); }
+
+/* A working indicator, not a typing animation: on a buffered path nothing is
+   arriving yet, and pretending otherwise is a lie the reader can feel. */
+.cai-working {
+  display: inline-block;
+  width: 0.6em; height: 0.6em;
+  margin-left: 0.4em;
+  border-radius: 50%;
+  background: var(--_muted);
+  animation: cai-pulse 1.1s ease-in-out infinite;
+}
+@keyframes cai-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
+@media (prefers-reduced-motion: reduce) {
+  .cai-working { animation: none; opacity: 0.6; }
+}
+
+.cai-notice {
+  padding: calc(var(--_gap) * 0.6) var(--_gap);
+  border-left: 2px solid var(--_muted);
+  color: var(--_muted);
+  max-width: 85%;
+}
+.cai-notice.cai-error { border-left-color: var(--_danger); color: var(--_danger); }
+
+.cai-session {
+  color: var(--_muted);
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---- the one widget frame ----------------------------------------------- */
+.cai-w {
+  /* One frame means one WIDTH too. Left to size to their content, a one-line
+     question and a table render as cards of wildly different sizes, which is
+     the ragged pile the single frame exists to prevent. They grow to the same
+     edge and stop there. */
+  flex: 1 1 auto;
+  max-width: 90%;
+  min-width: 0;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+  background: var(--_raised);
+  color: var(--_text);
+  overflow: hidden;
+}
+.cai-w-accent { border-color: color-mix(in srgb, var(--_accent) 40%, var(--_line)); }
+.cai-w-warn { border-color: color-mix(in srgb, var(--_warn) 45%, var(--_line)); }
+.cai-w-danger { border-color: color-mix(in srgb, var(--_danger) 45%, var(--_line)); }
+
+.cai-w-head {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--_gap) * 0.6);
+  padding: calc(var(--_gap) * 0.6) var(--_gap);
+  border-bottom: 1px solid var(--_line);
+}
+.cai-w-glyph { color: var(--_muted); }
+.cai-w-headtext { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.cai-w-headtext span { color: var(--_muted); font-size: 0.82em; }
+.cai-w-tag {
+  color: var(--_muted);
+  font-size: 0.72em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.cai-w-body { padding: var(--_gap); }
+.cai-w-foot {
+  display: flex;
+  gap: calc(var(--_gap) * 0.6);
+  padding: calc(var(--_gap) * 0.6) var(--_gap);
+  border-top: 1px solid var(--_line);
+}
+.cai-detail { color: var(--_muted); }
+
+/* A proposal reads as prose in two voices, not as a form. The label column is
+   narrow and quiet; what was said is what you look at. */
+.cai-proposal { margin: 0; display: grid; gap: calc(var(--_gap) * 0.6); }
+.cai-proposal div { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--_gap); }
+.cai-proposal dt { color: var(--_muted); font-size: 0.85em; }
+.cai-proposal dd { margin: 0; overflow-wrap: anywhere; }
+.cai-proposal .cai-instead dd { color: var(--_warn); }
+@media (max-width: 380px) {
+  .cai-proposal div { grid-template-columns: 1fr; gap: 2px; }
+}
+
+.cai-args { margin: 0; display: grid; gap: 4px; }
+.cai-args div { display: flex; gap: var(--_gap); }
+.cai-args dt { color: var(--_muted); min-width: 6rem; }
+.cai-args dd { margin: 0; overflow-wrap: anywhere; }
+
+/* ---- composer ----------------------------------------------------------- */
+.cai-composer {
+  display: flex;
+  gap: calc(var(--_gap) * 0.6);
+  padding: var(--_gap);
+  border-top: 1px solid var(--_line);
+  flex: 0 0 auto;
+}
+.cai-input {
+  flex: 1;
+  resize: none;
+  font: inherit;
+  color: var(--_text);
+  padding: calc(var(--_gap) * 0.6);
+  background: var(--_bg);
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+}
+.cai-input:focus-visible { outline: 2px solid var(--_accent); outline-offset: -1px; }
+
+.cai-btn {
+  font: inherit;
+  padding: calc(var(--_gap) * 0.5) var(--_gap);
+  border: 1px solid transparent;
+  border-radius: var(--_radius);
+  background: var(--_accent);
+  color: var(--_on-accent);
+  cursor: pointer;
+}
+.cai-btn:disabled { opacity: 0.45; cursor: default; }
+.cai-btn.cai-ghost { background: transparent; color: var(--_text); border-color: var(--_line); }
+.cai-btn.cai-stop { background: var(--_muted); color: var(--_on-accent); }
+.cai-btn:focus-visible { outline: 2px solid var(--_accent); outline-offset: 2px; }
+
+/* ---- widget bodies ------------------------------------------------------- */
+.cai-fields { display: grid; gap: var(--_gap); }
+.cai-field { display: grid; gap: 4px; }
+.cai-field > label { font-size: 0.85em; color: var(--_muted); }
+.cai-field.cai-invalid .cai-input { border-color: var(--_danger); }
+.cai-help { font-size: 0.78em; color: var(--_muted); }
+.cai-help.cai-required { color: var(--_danger); }
+
+.cai-options { display: flex; flex-wrap: wrap; gap: 6px; }
+.cai-opt {
+  font: inherit;
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--_text);
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+  cursor: pointer;
+}
+.cai-opt.cai-on {
+  background: color-mix(in srgb, var(--_accent) 14%, transparent);
+  border-color: var(--_accent);
+}
+.cai-opt:focus-visible { outline: 2px solid var(--_accent); outline-offset: 2px; }
+
+.cai-tablewrap { overflow-x: auto; }
+.cai-table { border-collapse: collapse; width: 100%; font-size: 0.92em; }
+.cai-table th, .cai-table td {
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--_line);
+  white-space: nowrap;
+}
+.cai-table th { color: var(--_muted); font-weight: 600; }
+.cai-al-number { text-align: right; font-variant-numeric: tabular-nums; }
+.cai-al-code { font-family: var(--_mono); }
+
+.cai-metrics { display: flex; flex-wrap: wrap; gap: var(--_gap); }
+.cai-metric { display: grid; gap: 2px; min-width: 5rem; }
+.cai-metric-v { font-size: 1.35em; font-variant-numeric: tabular-nums; }
+.cai-metric-l { font-size: 0.78em; color: var(--_muted); }
+.cai-metric-h { font-size: 0.72em; color: var(--_muted); }
+.cai-tone-good .cai-metric-v { color: var(--_good); }
+.cai-tone-warn .cai-metric-v { color: var(--_warn); }
+.cai-tone-bad .cai-metric-v { color: var(--_danger); }
+
+.cai-bars { display: grid; gap: 6px; }
+.cai-bar { display: grid; grid-template-columns: minmax(4rem, 1fr) 3fr auto; gap: 8px; align-items: center; }
+.cai-bar-l { font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cai-bar-track { background: var(--_sunken); height: 10px; display: block; }
+.cai-bar-fill { display: block; height: 100%; background: var(--_accent); }
+.cai-bar-v { font-size: 0.82em; font-variant-numeric: tabular-nums; color: var(--_muted); }
+
+.cai-timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cai-step { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; }
+.cai-step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--_line); }
+.cai-st-done .cai-step-dot { background: var(--_good); }
+.cai-st-current .cai-step-dot { background: var(--_accent); }
+.cai-st-failed .cai-step-dot { background: var(--_danger); }
+.cai-st-failed .cai-step-l { color: var(--_danger); }
+.cai-st-todo .cai-step-l { color: var(--_muted); }
+.cai-step-at { font-size: 0.76em; color: var(--_muted); }
+
+.cai-code, .cai-diff pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 8px;
+  background: var(--_sunken);
+  color: var(--_text);
+  font-family: var(--_mono);
+  font-size: 0.88em;
+}
+.cai-diff { display: grid; gap: 8px; }
+@media (min-width: 520px) { .cai-diff { grid-template-columns: 1fr 1fr; } }
+.cai-diff-tag {
+  display: block;
+  font-size: 0.72em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--_muted);
+}
+.cai-before pre { border-left: 2px solid var(--_danger); }
+.cai-after pre { border-left: 2px solid var(--_good); }
+.cai-prose { white-space: pre-wrap; }

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.playwright-mcp/
+*.png
+# ...but the README's screenshots are part of the repo
+!docs/screenshots/*.png
+# a handoff script left by an interrupted session must never reach a commit
+react-agent-chat-window-*.sh
+
+.env
+.env.*
+!.env.example

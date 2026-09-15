@@ -1,0 +1,103 @@
+/* ============================================================================
+ * dock.css — placement, and nothing else. OPTIONAL.
+ *
+ * Import this only if you use `ChatDock` or `ChatLauncher`. An app that has a
+ * panel system of its own — Atlas has a run dock, a host app has
+ * SessionShell — renders `ChatWindow` into its own panel and never imports
+ * this file. The window is the deliverable; this is a convenience for an app
+ * that does not want to write a resize grip.
+ *
+ * It is SEPARATE from chat.css on purpose. Everything that positions, layers
+ * or measures the viewport lives here, which is what lets `chat.css` be
+ * checked mechanically for having none of it — see `contract.test.ts`. A
+ * component that quietly grew a `position: fixed` would otherwise be
+ * undroppable into somebody's grid and nobody would find out until it was in
+ * their app.
+ *
+ * Requires chat.css, which declares the --_* roles used below. ChatDock always
+ * wraps a ChatWindow, so it is always already there.
+ *
+ * THE RULE THIS FILE EXISTS TO KEEP: a docked window TAKES SPACE, it does not
+ * overlay the thing it is talking about. An agent that covers the canvas it is
+ * describing is an agent you have to close in order to use. Only `floating`
+ * overlays, and only because that is what a floating window is for.
+ * ========================================================================== */
+
+.cai-dock {
+  display: flex;
+  min-height: 0;
+  background: var(--_bg);
+  color: var(--_text);
+}
+.cai-dock-body { flex: 1; min-width: 0; min-height: 0; }
+
+/* Right and bottom TAKE SPACE. They are laid out by the host as a flex
+   sibling of its content, never on top of it. */
+.cai-dock-right {
+  flex-direction: row;
+  border-left: 1px solid var(--_line);
+}
+.cai-dock-bottom {
+  flex-direction: column;
+  border-top: 1px solid var(--_line);
+}
+.cai-dock-floating {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  height: min(70vh, 640px);
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+  box-shadow: var(--_shadow);
+  z-index: var(--_z);
+}
+
+.cai-grip { flex: 0 0 6px; cursor: col-resize; background: transparent; }
+.cai-dock-bottom > .cai-grip { flex-basis: 6px; cursor: row-resize; }
+.cai-grip:hover, .cai-grip:focus-visible {
+  background: color-mix(in srgb, var(--_accent) 35%, transparent);
+  outline: none;
+}
+body.cai-resizing { user-select: none; cursor: grabbing; }
+
+.cai-launcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  padding: 4px 8px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: var(--_radius);
+  cursor: pointer;
+}
+.cai-launcher.cai-on { border-color: var(--_line); }
+.cai-launcher:focus-visible { outline: 2px solid var(--_accent); outline-offset: 2px; }
+
+/* The notice the dock renders when it has had to cover the workspace. It is in
+   the flow at the top of the dock, not floated over the conversation, because a
+   thing explaining that something is covering something else should not itself
+   cover anything. */
+.cai-dock-note {
+  display: none;
+  align-items: center;
+  gap: var(--_gap);
+  padding: calc(var(--_gap) * 0.6) var(--_gap);
+  background: var(--_sunken);
+  color: var(--_muted);
+  border-bottom: 1px solid var(--_line);
+  font-family: var(--_font);
+  font-size: calc(var(--_size) * 0.9);
+}
+.cai-dock-note span { flex: 1; min-width: 0; }
+
+/* A narrow viewport cannot honour "takes space, never covers": below this the
+   dock goes full width, and the component says so out loud rather than
+   silently becoming the thing it promised not to be. See `ChatDock`, which
+   renders a close affordance and an explanation at this width. */
+@media (max-width: 720px) {
+  .cai-dock-right { position: fixed; inset: 0; width: auto !important; z-index: var(--_z); flex-direction: column; }
+  .cai-dock-right > .cai-grip { display: none; }
+  .cai-dock-right > .cai-dock-note { display: flex; }
+}

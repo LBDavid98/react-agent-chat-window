@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>frame</title>
+<style>
+  html, body { height: 100%; margin: 0; }
+  /* The host's page ground, so a translucent surface token — Aurora's
+     nebula panels are frosted glass — is seen over something rather than over
+     white. */
+  body { background: var(--page-bg, #fff); display: flex; }
+  #chat { flex: 1; min-width: 0; display: flex; }
+</style>
+<div id="chat"></div>
+<script type="module" src="./frame.tsx"></script>

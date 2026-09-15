@@ -1,0 +1,34 @@
+/* Atlas (agent-builder). Maps its design tokens onto this window's roles.
+ * Source: atlas/frontend/src/styles/design-tokens.css — 80 tokens, with a
+ * :root light block, a prefers-color-scheme dark block, and a
+ * :root[data-theme="dark"] block that beats the media query. Because every
+ * value below is substituted at USE, all three modes are covered by this one
+ * mapping; there is nothing here to keep in step with a theme switch.
+ *
+ * Custom properties only. No rule in this file paints anything.
+ *
+ * NOTE: do not reach for --color-border. It does not exist in Atlas and is
+ * referenced 29 times across run.css, prompt-studio.css and agentLibrary.css
+ * with no fallback, so those borders compute to currentColor and silently do
+ * not render. --color-divider is the real one. */
+:root {
+  --cai-bg: var(--color-surface);
+  --cai-bg-sunken: var(--color-surface-sunken);
+  --cai-bg-raised: var(--color-surface-raised);
+  --cai-text: var(--color-text);
+  --cai-text-muted: var(--color-text-mut);
+  --cai-line: var(--color-divider);
+
+  --cai-accent: var(--color-accent);
+  --cai-on-accent: var(--color-on-accent);
+
+  --cai-good: var(--color-good);
+  --cai-warn: var(--color-warning);
+  --cai-danger: var(--color-critical);
+
+  --cai-radius: var(--radius-sm);
+  --cai-gap: var(--space-3);
+  --cai-font: var(--font-body);
+  --cai-mono: var(--font-mono);
+  --cai-shadow: var(--shadow-lg);
+}

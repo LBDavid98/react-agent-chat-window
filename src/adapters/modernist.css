@@ -1,0 +1,47 @@
+/* The vendored Modernist design system (`design-import/_ds/modernist-*`), and
+ * anything layered over it — a host app is the worked example.
+ *
+ * Modernist defines a CORE and no more: --color-bg, --color-surface,
+ * --color-text, --color-divider, --color-accent (+ ramps), --color-neutral-N,
+ * --space-N, --radius-*, --shadow-*, --font-body, --font-heading. It has no
+ * raised/sunken surface, no muted ink, no status colours and no mono stack.
+ *
+ * So those are DERIVED with color-mix off tokens it does define, rather than
+ * frozen as literals. A literal here would be the whole bug this adapter layer
+ * exists to fix: a host app runs a three-way dark theme (per palette, OS and
+ * explicit), and a fixed light grey painted into cobalt dark (#202224 ground,
+ * #e8edf3 ink) is invisible text, not a slightly-off shade.
+ *
+ * Mixing INK INTO SURFACE always moves toward contrast, so a derived band is
+ * legible in light and dark alike without either mode being special-cased.
+ *
+ * Where a host app names a role Modernist lacks (--color-ok / --color-warn /
+ * --color-block), it is preferred and the plain-Modernist case falls through.
+ *
+ * Custom properties only. No rule in this file paints anything. */
+:root {
+  --cai-bg: var(--color-surface);
+  /* A well, not a second plane: 6% ink over the surface. */
+  --cai-bg-sunken: color-mix(in srgb, var(--color-text) 6%, var(--color-surface));
+  /* Modernist has no third elevation. A card sits on the same plane and is
+     told apart by its border, which is what --color-divider is for. */
+  --cai-bg-raised: var(--color-surface);
+  --cai-text: var(--color-text);
+  --cai-text-muted: color-mix(in srgb, var(--color-text) 62%, var(--color-surface));
+  --cai-line: var(--color-divider);
+
+  --cai-accent: var(--color-accent);
+  --cai-on-accent: var(--color-on-accent, #fff);
+
+  --cai-good: var(--color-ok, #2f7d4f);
+  --cai-warn: var(--color-warn, #b7791f);
+  --cai-danger: var(--color-block, #c0392b);
+
+  --cai-radius: var(--radius-sm);
+  --cai-gap: var(--space-3);
+  --cai-font: var(--font-body);
+  /* Deliberately absent upstream — a host app's kit owns the mono stack and says
+     so (packages/ui/src/surfaces/RepoHome.css). Fall through to the default. */
+  --cai-mono: var(--font-mono, ui-monospace, monospace);
+  --cai-shadow: var(--shadow-lg);
+}

@@ -1,0 +1,42 @@
+/* Almanac / a dashboard app. Source: project-management/webapp/static/style.css.
+ *
+ * A disjoint vocabulary — Almanac names nothing --color-*. It has a :root light
+ * block and a prefers-color-scheme dark override, both covered by this one
+ * mapping because substitution happens at use.
+ *
+ * Almanac is a Flask app with no bundler, so it reaches this window through the
+ * IIFE build and a <script> tag rather than an import. See mount.ts.
+ *
+ * Two mappings worth their reasons:
+ *   --page is the RECESSED ground in both modes (#f9f9f7 under a #fcfcfb
+ *   surface; #0d0d0d under #1a1a19), so it is the honest sunken well rather
+ *   than something derived.
+ *   --series-1 is the accent — "blue, the workhorse", per the source. There is
+ *   no bare --accent in Almanac; --accent-wash is a tint of this one.
+ *
+ * Custom properties only. No rule in this file paints anything.
+ *
+ * Almanac itself carries a written note about exactly the failure this whole
+ * adapter layer prevents: --mut was referenced 15 times and never defined, so
+ * every muted label rendered at full ink strength and the de-emphasis simply
+ * did not happen. It was fixed with an alias, at the definition, for the same
+ * reason these are aliases and not a rewrite of 40 call sites. */
+:root {
+  --cai-bg: var(--surface);
+  --cai-bg-sunken: var(--page);
+  --cai-bg-raised: var(--surface);
+  --cai-text: var(--ink);
+  --cai-text-muted: var(--ink-mut);
+  --cai-line: var(--border);
+
+  --cai-accent: var(--series-1);
+  --cai-on-accent: var(--on-accent);
+
+  --cai-good: var(--good);
+  --cai-warn: var(--warning);
+  --cai-danger: var(--critical);
+
+  --cai-shadow: var(--shadow-lift);
+  /* Almanac defines no radius, space, or font token. The defaults in chat.css
+     are a flat, system-font window, which is what Almanac already looks like. */
+}
