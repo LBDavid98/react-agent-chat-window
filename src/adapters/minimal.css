@@ -1,7 +1,9 @@
-/* The vendored Modernist design system (`design-import/_ds/modernist-*`), and
- * anything layered over it — a host app is the worked example.
+/* A deliberately SPARSE design system, plus anything layered over it.
  *
- * Modernist defines a CORE and no more: --color-bg, --color-surface,
+ * The interesting adapter of the four: it maps a host that defines a core and
+ * stops there, which is the case that breaks a naive adapter.
+ *
+ * This system defines a CORE and no more: --color-bg, --color-surface,
  * --color-text, --color-divider, --color-accent (+ ramps), --color-neutral-N,
  * --space-N, --radius-*, --shadow-*, --font-body, --font-heading. It has no
  * raised/sunken surface, no muted ink, no status colours and no mono stack.
@@ -15,15 +17,15 @@
  * Mixing INK INTO SURFACE always moves toward contrast, so a derived band is
  * legible in light and dark alike without either mode being special-cased.
  *
- * Where a host app names a role Modernist lacks (--color-ok / --color-warn /
- * --color-block), it is preferred and the plain-Modernist case falls through.
+ * Where a host app names a role the core lacks (--color-ok / --color-warn /
+ * --color-block), it is preferred and the bare-core case falls through.
  *
  * Custom properties only. No rule in this file paints anything. */
 :root {
   --cai-bg: var(--color-surface);
   /* A well, not a second plane: 6% ink over the surface. */
   --cai-bg-sunken: color-mix(in srgb, var(--color-text) 6%, var(--color-surface));
-  /* Modernist has no third elevation. A card sits on the same plane and is
+  /* The core has no third elevation. A card sits on the same plane and is
      told apart by its border, which is what --color-divider is for. */
   --cai-bg-raised: var(--color-surface);
   --cai-text: var(--color-text);

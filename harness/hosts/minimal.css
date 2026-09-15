@@ -1,8 +1,8 @@
-/* The vendored Modernist core, plus a cobalt palette over it.
+/* A deliberately sparse design-system core, plus a cobalt palette over it.
  *
  * Note what is NOT here, because it is the point: no raised or sunken surface,
  * no muted ink, no --color-good/-warning/-critical, no --font-mono, no
- * --color-on-accent. adapters/modernist.css derives all of those. Before that
+ * --color-on-accent. adapters/minimal.css derives all of those. Before that
  * adapter existed, this is the configuration in which every agent reply
  * rendered #e8edf3 ink on an #f3f2f2 ground. */
 :root {

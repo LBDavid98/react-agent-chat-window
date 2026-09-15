@@ -13,7 +13,7 @@ import 'react-agent-chat-window/adapters/atlas.css'
 | App | File | Notes |
 |---|---|---|
 | Atlas / agent-builder | `atlas.css` | Maps all sixteen; nothing derived. |
-| a host app, or any Modernist `_ds` app | `modernist.css` | Derives raised/sunken/muted/status, which Modernist does not have. |
+| a host app, or any the core `_ds` app | `minimal.css` | Derives raised/sunken/muted/status, which the core does not have. |
 | Almanac / a dashboard app | `almanac.css` | Disjoint vocabulary — `--surface`, `--ink`, `--border`. Reached through the IIFE build. |
 | Aurora | `aurora.css` | Its theme is inline style on `:root`; see the file. |
 

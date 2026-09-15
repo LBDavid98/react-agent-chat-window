@@ -38,7 +38,7 @@ So each of those is an extension point here instead:
 ```tsx
 import { ChatWindow, createHttpChatClient, useChat } from 'react-agent-chat-window'
 import 'react-agent-chat-window/chat.css'
-import 'react-agent-chat-window/adapters/modernist.css'   // or write your own
+import 'react-agent-chat-window/adapters/minimal.css'   // or write your own
 
 const client = createHttpChatClient({ baseUrl: '/api' })
 
@@ -74,7 +74,7 @@ script tag.
 
 ```html
 <link rel="stylesheet" href="/static/chat.css" />
-<link rel="stylesheet" href="/static/adapters/modernist.css" />
+<link rel="stylesheet" href="/static/adapters/minimal.css" />
 <div id="chat"></div>
 <script src="/static/chat.iife.js"></script>
 <script>
@@ -159,7 +159,7 @@ window instead of an unstyled box.
 Four adapters ship as worked examples, chosen because their token vocabularies
 are structurally different: `atlas` (a conventional `--color-*` system),
 `almanac` (`--page` / `--surface` / `--ink`), `aurora` (oklch, with translucent
-frosted panels), and `modernist` (deliberately sparse — the adapter derives
+frosted panels), and `minimal` (deliberately sparse — the adapter derives
 every role the host does not define).
 
 ### The theme harness

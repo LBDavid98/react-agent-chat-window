@@ -19,8 +19,8 @@ const scheme = params.get('scheme') ?? 'light'
 const SHEETS: Record<string, () => Promise<unknown>> = {
   atlas: () =>
     Promise.all([import('./hosts/atlas.css'), import('../src/adapters/atlas.css')]),
-  modernist: () =>
-    Promise.all([import('./hosts/modernist.css'), import('../src/adapters/modernist.css')]),
+  minimal: () =>
+    Promise.all([import('./hosts/minimal.css'), import('../src/adapters/minimal.css')]),
   almanac: () => Promise.all([import('./hosts/almanac.css'), import('../src/adapters/almanac.css')]),
   aurora: () =>
     Promise.all([import('./hosts/aurora.css'), import('../src/adapters/aurora.css')]),

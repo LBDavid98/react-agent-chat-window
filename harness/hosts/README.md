@@ -18,7 +18,7 @@ Values copied 2026-08-31 from:
 | File | Source |
 |---|---|
 | `atlas.css` | `atlas/frontend/src/styles/design-tokens.css` |
-| `modernist.css` | the vendored `_ds/modernist-*/styles.css` + `a host app/packages/ui/src/theme.css`, cobalt |
+| `minimal.css` | the vendored `_ds/minimal-*/styles.css` + `a host app/packages/ui/src/theme.css`, cobalt |
 | `almanac.css` | `project-management/webapp/static/style.css` |
 | `aurora.css` | `the host repo` `src/design/themes.ts`, plain (light) and nebula (dark) |
 
